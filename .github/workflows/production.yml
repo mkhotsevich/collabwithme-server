@@ -32,3 +32,4 @@ jobs:
           env_file: '.env'
         env:
           NODE_ENV: production
+          NODE_TLS_REJECT_UNAUTHORIZED: 1
