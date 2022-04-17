@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Deploy to Heroku
 
 on:
   push:
@@ -10,20 +10,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'npm'
-      - run: npm ci
+      - run: npm i
       - run: npm run build
       - run: npm test
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
