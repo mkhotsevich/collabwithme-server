@@ -11,7 +11,7 @@ import { UsersModule } from './users/users.module';
       type: 'postgres',
       url: process.env.POSTGRES_URL,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      ssl: { rejectUnauthorized: process.env.NODE_ENV !== 'development' },
+      ssl: { rejectUnauthorized: false },
       synchronize: process.env.NODE_ENV === 'development',
       autoLoadEntities: true,
     }),
