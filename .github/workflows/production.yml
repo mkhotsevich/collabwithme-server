@@ -7,21 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'npm'
-      - run: npm i
-      - run: npm run build
-      - run: npm test
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,6 +19,3 @@ jobs:
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           remote_branch: main
-          env_file: '.env'
-        env:
-          NODE_ENV: production
