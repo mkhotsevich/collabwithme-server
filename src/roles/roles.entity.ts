@@ -1,10 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Rule } from 'src/rules/rules.entity';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'roles' })
+export type RoleName = 'USER' | 'MODERATOR' | 'ADMIN';
+
+@Entity()
 export class Role {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
-  @Column({ unique: true })
-  name: string;
+  @Column({ type: 'enum', enum: ['USER', 'MODERATOR', 'ADMIN'], unique: true })
+  name: RoleName;
+
+  @ManyToMany(() => Rule)
+  @JoinTable()
+  rules: Rule[];
 }
