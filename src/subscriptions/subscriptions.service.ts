@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSubscriptionDto } from './dto/create-subscription.dto';
-import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
-import { Subscription } from './subscriptions.entity';
+import { initialSubscriptions } from './subscriptions.consts';
+import { Subscription, SubscriptionName } from './subscriptions.entity';
 
 @Injectable()
 export class SubscriptionsService {
@@ -12,36 +11,22 @@ export class SubscriptionsService {
     private subscriptionsRepository: Repository<Subscription>,
   ) {}
 
-  async create(dto: CreateSubscriptionDto) {
-    const subscription = this.subscriptionsRepository.create(dto);
-    await this.subscriptionsRepository.save(subscription);
-    return subscription;
+  async init() {
+    await this.subscriptionsRepository.save(initialSubscriptions);
+    console.log('SUBSCRIPTION INITIALED');
   }
 
   async getAll() {
-    const subscriptions = await this.subscriptionsRepository.find();
-    return subscriptions;
+    return await this.subscriptionsRepository.find();
   }
 
-  async get(id: number) {
-    const subscription = await this.subscriptionsRepository.findOne(id);
-    return subscription;
+  async getById(id: number) {
+    return await this.subscriptionsRepository.findOne(id);
   }
 
-  async update(id: number, dto: UpdateSubscriptionDto) {
-    const subscription = await this.subscriptionsRepository.findOne(id);
-    const updatedSubscription = await this.subscriptionsRepository.save({
-      ...subscription,
-      ...dto,
+  async getByName(name: SubscriptionName) {
+    return await this.subscriptionsRepository.findOne({
+      where: { name },
     });
-    return updatedSubscription;
-  }
-
-  async delete(id: number) {
-    const subscription = await this.subscriptionsRepository.findOne(id);
-    const deletedSubscription = await this.subscriptionsRepository.remove(
-      subscription,
-    );
-    return { ...deletedSubscription, id };
   }
 }

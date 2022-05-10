@@ -1,17 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from 'src/roles/roles.entity';
+import { RolesService } from 'src/roles/roles.service';
+import { Subscription } from 'src/subscriptions/subscriptions.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  BeforeInsert,
+} from 'typeorm';
 
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  MODERATOR = 'MODERATOR',
-  USER = 'USER',
-}
-
-export enum UserGender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-}
-
-@Entity({ name: 'users' })
+@Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,9 +26,18 @@ export class User {
   @Column({ nullable: true })
   lastName: string;
 
-  @Column({ type: 'enum', enum: UserGender, nullable: true })
-  gender: UserGender;
+  @Column({ nullable: true })
+  username: string;
 
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
-  role: UserRole;
+  @Column({ nullable: true })
+  avatar: string;
+
+  @Column({ nullable: true })
+  gender: string;
+
+  @ManyToOne(() => Role)
+  role: Role;
+
+  @ManyToOne(() => Subscription)
+  subscription: Subscription;
 }

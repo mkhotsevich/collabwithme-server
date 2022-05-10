@@ -1,10 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Rule } from 'src/rules/rules.entity';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'subscriptions' })
+export type SubscriptionName = 'FREE' | 'STANDARD' | 'PREMIUM';
+
+@Entity()
 export class Subscription {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
-  @Column({ unique: true })
-  name: string;
+  @Column({
+    type: 'enum',
+    enum: ['FREE', 'STANDARD', 'PREMIUM'],
+  })
+  name: SubscriptionName;
+
+  @ManyToMany(() => Rule)
+  @JoinTable()
+  rules: Rule[];
 }

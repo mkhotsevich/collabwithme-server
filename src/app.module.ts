@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { NetworksModule } from './networks/networks.module';
 import { RolesModule } from './roles/roles.module';
 import { RulesModule } from './rules/rules.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { RulesService } from './rules/rules.service';
+import { RolesService } from './roles/roles.service';
+import { SubscriptionsService } from './subscriptions/subscriptions.service';
+import { CollaborationsModule } from './collaborations/collaborations.module';
 
 @Module({
   imports: [
@@ -20,13 +23,25 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
       synchronize: process.env.NODE_ENV === 'development',
       autoLoadEntities: true,
     }),
-    AuthModule,
     UsersModule,
     CategoriesModule,
     NetworksModule,
-    RolesModule,
     RulesModule,
+    RolesModule,
     SubscriptionsModule,
+    CollaborationsModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private rulesService: RulesService,
+    private rolesService: RolesService,
+    private subscriptionService: SubscriptionsService,
+  ) {}
+
+  async onModuleInit() {
+    await this.rulesService.init();
+    await this.rolesService.init();
+    await this.subscriptionService.init();
+  }
+}

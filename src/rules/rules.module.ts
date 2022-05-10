@@ -8,5 +8,6 @@ import { Rule } from './rules.entity';
   imports: [TypeOrmModule.forFeature([Rule])],
   providers: [RulesService],
   controllers: [RulesController],
+  exports: [RulesService],
 })
 export class RulesModule {}
