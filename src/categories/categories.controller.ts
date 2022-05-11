@@ -7,9 +7,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { CreateCategoryDto, UpdateCategoryDto } from './categories.dto';
 import { CategoriesService } from './categories.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -26,8 +25,8 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
-    return this.categoriesService.get(+id);
+  getById(@Param('id') id: string) {
+    return this.categoriesService.getById(+id);
   }
 
   @Patch(':id')

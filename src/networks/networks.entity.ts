@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'networks' })
+@Entity()
 export class Network {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
 }

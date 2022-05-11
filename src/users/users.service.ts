@@ -34,8 +34,15 @@ export class UsersService {
     });
   }
 
-  async get(id: number) {
+  async getById(id: number) {
     return await this.usersRepository.findOne(+id);
+  }
+
+  async getByEmail(email: string) {
+    return await this.usersRepository.findOne({
+      where: { email },
+      relations: ['role'],
+    });
   }
 
   async update(id: number, dto: UpdateUserDto) {
