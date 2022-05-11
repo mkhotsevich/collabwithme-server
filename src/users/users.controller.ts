@@ -27,8 +27,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
-    return this.usersService.get(+id);
+  getById(@Param('id') id: string) {
+    return this.usersService.getById(+id);
   }
 
   @Patch(':id')

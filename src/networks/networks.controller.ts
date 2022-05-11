@@ -7,8 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateNetworkDto } from './dto/create-network.dto';
-import { UpdateNetworkDto } from './dto/update-network.dto';
+import { CreateNetworkDto, UpdateNetworkDto } from './networks.dto';
 import { NetworksService } from './networks.service';
 
 @Controller('networks')
@@ -27,7 +26,7 @@ export class NetworksController {
 
   @Get(':id')
   get(@Param('id') id: string) {
-    return this.networksService.get(+id);
+    return this.networksService.getById(+id);
   }
 
   @Patch(':id')

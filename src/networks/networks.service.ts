@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateNetworkDto } from './dto/create-network.dto';
-import { UpdateNetworkDto } from './dto/update-network.dto';
+import { initialNetworks } from './networks.consts';
+import { CreateNetworkDto, UpdateNetworkDto } from './networks.dto';
 import { Network } from './networks.entity';
 
 @Injectable()
@@ -12,34 +12,29 @@ export class NetworksService {
     private networksRepository: Repository<Network>,
   ) {}
 
+  async init() {
+    await this.networksRepository.save(initialNetworks);
+    console.log('NETWORKS INITIALED');
+  }
+
   async create(dto: CreateNetworkDto) {
     const network = this.networksRepository.create(dto);
-    await this.networksRepository.save(network);
-    return network;
+    return await this.networksRepository.save(network);
   }
 
   async getAll() {
-    const networks = await this.networksRepository.find();
-    return networks;
+    return await this.networksRepository.find();
   }
 
-  async get(id: number) {
-    const network = await this.networksRepository.findOne(id);
-    return network;
+  async getById(id: number) {
+    return await this.networksRepository.findOne(id);
   }
 
   async update(id: number, dto: UpdateNetworkDto) {
-    const network = await this.networksRepository.findOne(id);
-    const updatedNetwork = await this.networksRepository.save({
-      ...network,
-      ...dto,
-    });
-    return updatedNetwork;
+    return await this.networksRepository.save({ id, ...dto });
   }
 
   async delete(id: number) {
-    const network = await this.networksRepository.findOne(id);
-    const deletedNetwork = await this.networksRepository.remove(network);
-    return { ...deletedNetwork, id };
+    return await this.networksRepository.delete(id);
   }
 }

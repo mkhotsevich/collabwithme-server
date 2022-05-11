@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Network])],
   providers: [NetworksService],
   controllers: [NetworksController],
+  exports: [NetworksService],
 })
 export class NetworksModule {}
