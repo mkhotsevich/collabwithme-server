@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './users.entity';
 import * as _ from 'lodash';
 import { RolesService } from 'src/roles/roles.service';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
+import { CreateUserDto, UpdateUserDto } from './users.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +29,7 @@ export class UsersService {
 
   async getAll() {
     return await this.usersRepository.find({
-      relations: ['role', 'subscription'],
+      relations: ['role', 'subscription', 'links'],
     });
   }
 

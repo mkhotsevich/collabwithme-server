@@ -1,3 +1,4 @@
+import { Link } from 'src/links/links.entity';
 import { Role } from 'src/roles/roles.entity';
 import { RolesService } from 'src/roles/roles.service';
 import { Subscription } from 'src/subscriptions/subscriptions.entity';
@@ -7,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -40,4 +42,7 @@ export class User {
 
   @ManyToOne(() => Subscription)
   subscription: Subscription;
+
+  @OneToMany(() => Link, (link) => link.user)
+  links: Link[];
 }

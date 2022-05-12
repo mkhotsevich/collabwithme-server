@@ -18,5 +18,6 @@ import { NetworksModule } from 'src/networks/networks.module';
   ],
   providers: [CollaborationsService],
   controllers: [CollaborationsController],
+  exports: [CollaborationsService],
 })
 export class CollaborationsModule {}
