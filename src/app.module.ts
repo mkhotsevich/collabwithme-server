@@ -14,6 +14,11 @@ import { CollaborationsModule } from './collaborations/collaborations.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesService } from './categories/categories.service';
 import { NetworksService } from './networks/networks.service';
+import { LinksModule } from './links/links.module';
+import { RoomsModule } from './rooms/rooms.module';
+import { MessagesModule } from './messages/messages.module';
+import { ResponsesModule } from './responses/responses.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -23,7 +28,7 @@ import { NetworksService } from './networks/networks.service';
       url: process.env.POSTGRES_URL,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       ssl: { rejectUnauthorized: false },
-      // synchronize: process.env.NODE_ENV === 'development',
+      synchronize: process.env.NODE_ENV === 'development',
       autoLoadEntities: true,
     }),
     UsersModule,
@@ -34,6 +39,11 @@ import { NetworksService } from './networks/networks.service';
     SubscriptionsModule,
     CollaborationsModule,
     AuthModule,
+    LinksModule,
+    RoomsModule,
+    MessagesModule,
+    ResponsesModule,
+    ChatModule,
   ],
 })
 export class AppModule {
