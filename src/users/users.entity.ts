@@ -1,15 +1,15 @@
 import { Link } from 'src/links/links.entity';
 import { Role } from 'src/roles/roles.entity';
-import { RolesService } from 'src/roles/roles.service';
 import { Subscription } from 'src/subscriptions/subscriptions.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  BeforeInsert,
   OneToMany,
 } from 'typeorm';
+
+export type UserGender = 'Мужской' | 'Женский' | 'Не указан';
 
 @Entity()
 export class User {
@@ -22,20 +22,24 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Column()
   firstName: string;
 
-  @Column({ nullable: true })
+  @Column()
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column()
   username: string;
 
   @Column({ nullable: true })
   avatar: string;
 
-  @Column({ nullable: true })
-  gender: string;
+  @Column({
+    type: 'enum',
+    enum: ['Мужской', 'Женский', 'Не указан'],
+    default: 'Не указан',
+  })
+  gender: UserGender;
 
   @ManyToOne(() => Role)
   role: Role;

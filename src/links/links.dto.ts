@@ -3,3 +3,7 @@ export class CreateLinkDto {
   networkId: number;
   link: string;
 }
+
+export class UpdateLinkDto {
+  link: string;
+}

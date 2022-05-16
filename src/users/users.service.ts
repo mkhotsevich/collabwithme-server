@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
-import * as _ from 'lodash';
 import { RolesService } from 'src/roles/roles.service';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
-import { CreateUserDto, UpdateUserDto } from './users.dto';
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from './users.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -34,7 +34,9 @@ export class UsersService {
   }
 
   async getById(id: number) {
-    return await this.usersRepository.findOne(+id);
+    return await this.usersRepository.findOne(+id, {
+      relations: ['subscription', 'links'],
+    });
   }
 
   async getByEmail(email: string) {
@@ -52,30 +54,26 @@ export class UsersService {
     });
   }
 
+  async updatePassword(id: number, dto: UpdatePasswordDto) {
+    const user = await this.usersRepository.findOne(id);
+    const passwordEquals = await bcrypt.compare(
+      dto.currentPassword,
+      user.password,
+    );
+    if (!passwordEquals) {
+      throw new BadRequestException('Текущий пароль указан неверно');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.newPassword, 8);
+    return await this.usersRepository.save({
+      ...user,
+      password: hashedPassword,
+    });
+  }
+
   async delete(id: number) {
     const user = await this.usersRepository.findOne(id);
     const deletedUser = await this.usersRepository.remove(user);
     return { ...deletedUser, id };
   }
-
-  // async findByEmail(email: string) {
-  //   const user = await this.usersRepository.findOne({ where: { email } });
-  //   return user;
-  // }
-  // async findById(id: string) {
-  //   const { password, ...user } = await this.usersRepository.findOne(id);
-  //   return user;
-  // }
-
-  // async remove(id: string) {
-  //   const user = await this.usersRepository.findOne(id);
-  //   const deletedUser = await this.usersRepository.remove(user);
-  //   return deletedUser;
-  // }
-  // findOne(id: string): Promise<User> {
-  //   return this.usersRepository.findOne(id);
-  // }
-  // async remove(id: string): Promise<void> {
-  //   await this.usersRepository.delete(id);
-  // }
 }

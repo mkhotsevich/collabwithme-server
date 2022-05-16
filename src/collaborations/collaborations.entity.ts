@@ -1,6 +1,7 @@
 import { Category } from 'src/categories/categories.entity';
 import { Network } from 'src/networks/networks.entity';
 import { User } from 'src/users/users.entity';
+import { Response } from 'src/responses/responses.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +9,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -38,4 +40,7 @@ export class Collaboration {
   @ManyToMany(() => Network)
   @JoinTable()
   networks: Network[];
+
+  @OneToMany(() => Response, (response) => response.collaboration)
+  responses: Response[];
 }

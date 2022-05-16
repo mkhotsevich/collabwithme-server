@@ -5,9 +5,15 @@ import { LinksService } from './links.service';
 import { LinksController } from './links.controller';
 import { NetworksModule } from 'src/networks/networks.module';
 import { UsersModule } from 'src/users/users.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Link]), NetworksModule, UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([Link]),
+    NetworksModule,
+    UsersModule,
+    AuthModule,
+  ],
   providers: [LinksService],
   controllers: [LinksController],
 })

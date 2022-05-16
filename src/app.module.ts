@@ -19,6 +19,17 @@ import { RoomsModule } from './rooms/rooms.module';
 import { MessagesModule } from './messages/messages.module';
 import { ResponsesModule } from './responses/responses.module';
 import { ChatModule } from './chat/chat.module';
+import { User } from './users/users.entity';
+import { Category } from './categories/categories.entity';
+import { Collaboration } from './collaborations/collaborations.entity';
+import { Link } from './links/links.entity';
+import { Message } from './messages/messages.entity';
+import { Network } from './networks/networks.entity';
+import { Response } from './responses/responses.entity';
+import { Role } from './roles/roles.entity';
+import { Room } from './rooms/rooms.entity';
+import { Rule } from './rules/rules.entity';
+import { Subscription } from './subscriptions/subscriptions.entity';
 
 @Module({
   imports: [
@@ -26,7 +37,19 @@ import { ChatModule } from './chat/chat.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.POSTGRES_URL,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [
+        User,
+        Category,
+        Collaboration,
+        Link,
+        Message,
+        Network,
+        Response,
+        Role,
+        Room,
+        Rule,
+        Subscription,
+      ],
       ssl: { rejectUnauthorized: false },
       synchronize: process.env.NODE_ENV === 'development',
       autoLoadEntities: true,

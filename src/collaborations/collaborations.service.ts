@@ -42,7 +42,7 @@ export class CollaborationsService {
 
   async getAll() {
     return await this.collaborationRepository.find({
-      relations: ['user', 'categories', 'networks'],
+      relations: ['user', 'categories', 'networks', 'responses'],
     });
   }
 

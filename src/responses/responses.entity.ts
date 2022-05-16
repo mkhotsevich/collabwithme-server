@@ -7,7 +7,7 @@ export class Response {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   explanation: string;
 
   @Column()
