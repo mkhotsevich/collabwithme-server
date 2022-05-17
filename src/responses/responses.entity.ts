@@ -19,6 +19,8 @@ export class Response {
   @ManyToOne(() => User)
   user: User;
 
-  @ManyToOne(() => Collaboration)
+  @ManyToOne(() => Collaboration, (collaboration) => collaboration.id, {
+    onDelete: 'CASCADE',
+  })
   collaboration: Collaboration;
 }

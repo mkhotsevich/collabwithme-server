@@ -1,6 +1,18 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { CreateCollaborationDto } from './collaborations.dto';
+import {
+  CreateCollaborationDto,
+  UpdateCollaborationDto,
+} from './collaborations.dto';
 import { CollaborationsService } from './collaborations.service';
 import { User } from 'src/users/users.decorator';
 import { AuthPayload } from 'src/auth/auth.entity';
@@ -13,6 +25,22 @@ export class CollaborationsController {
   @Post()
   create(@Body() dto: CreateCollaborationDto, @User() user: AuthPayload) {
     return this.collaborationsService.create({ ...dto, userId: user.id });
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  update(
+    @Body() dto: UpdateCollaborationDto,
+    @User() user: AuthPayload,
+    @Param('id') id: string,
+  ) {
+    return this.collaborationsService.update(+id, dto, user.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  delete(@Param('id') id: string, @User() user: AuthPayload) {
+    return this.collaborationsService.delete(+id, user.id);
   }
 
   @Get()

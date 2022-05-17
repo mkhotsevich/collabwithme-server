@@ -37,4 +37,8 @@ export class NetworksService {
   async delete(id: number) {
     return await this.networksRepository.delete(id);
   }
+
+  async getByIds(ids: (number | string)[]) {
+    return await this.networksRepository.findByIds(ids);
+  }
 }

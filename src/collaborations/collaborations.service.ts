@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriesService } from 'src/categories/categories.service';
 import { NetworksService } from 'src/networks/networks.service';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
-import { CreateCollaborationDto } from './collaborations.dto';
+import {
+  CreateCollaborationDto,
+  UpdateCollaborationDto,
+} from './collaborations.dto';
 import { Collaboration } from './collaborations.entity';
 
 @Injectable()
@@ -24,12 +27,8 @@ export class CollaborationsService {
     ...dto
   }: CreateCollaborationDto) {
     const user = await this.usersService.getById(userId);
-    const categories = await Promise.all(
-      categoryIds.map((id) => this.categoriesService.getById(id)),
-    );
-    const networks = await Promise.all(
-      networkIds.map((id) => this.networksService.getById(id)),
-    );
+    const networks = await this.networksService.getByIds(networkIds);
+    const categories = await this.categoriesService.getByIds(networkIds);
 
     const newCollaboration = this.collaborationRepository.create({
       ...dto,
@@ -58,5 +57,34 @@ export class CollaborationsService {
       relations: ['user', 'categories', 'networks', 'responses'],
       order: { createdDate: 'DESC' },
     });
+  }
+
+  async update(
+    id: number,
+    { networkIds, categoryIds, ...dto }: UpdateCollaborationDto,
+    userId: number,
+  ) {
+    const collaboration = await this.collaborationRepository.findOne(id);
+    if (collaboration.userId !== userId) {
+      throw new BadRequestException('У вас недостаточно прав');
+    }
+
+    const networks = await this.networksService.getByIds(networkIds);
+    const categories = await this.categoriesService.getByIds(categoryIds);
+    return await this.collaborationRepository.save({
+      ...collaboration,
+      ...dto,
+      networks,
+      categories,
+    });
+  }
+
+  async delete(id: number, userId: number) {
+    const collaboration = await this.collaborationRepository.findOne(id);
+    if (collaboration.userId !== userId) {
+      throw new BadRequestException('У вас недостаточно прав');
+    }
+
+    return await this.collaborationRepository.remove(collaboration);
   }
 }

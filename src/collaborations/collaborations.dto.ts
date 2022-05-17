@@ -5,3 +5,10 @@ export class CreateCollaborationDto {
   readonly categoryIds: number[];
   readonly networkIds: number[];
 }
+
+export class UpdateCollaborationDto {
+  readonly name: string;
+  readonly description: string;
+  readonly categoryIds: number[];
+  readonly networkIds: number[];
+}

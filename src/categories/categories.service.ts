@@ -37,4 +37,8 @@ export class CategoriesService {
   async delete(id: number) {
     return await this.categoriesRepository.delete(id);
   }
+
+  async getByIds(ids: (number | string)[]) {
+    return await this.categoriesRepository.findByIds(ids);
+  }
 }
