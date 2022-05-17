@@ -47,6 +47,16 @@ export class CollaborationsService {
   }
 
   async getById(id: number) {
-    return await this.collaborationRepository.findOne(id);
+    return await this.collaborationRepository.findOne(id, {
+      relations: ['user', 'categories', 'networks', 'responses'],
+    });
+  }
+
+  async getByUserId(userId: number) {
+    return await this.collaborationRepository.find({
+      where: { userId },
+      relations: ['user', 'categories', 'networks', 'responses'],
+      order: { createdDate: 'DESC' },
+    });
   }
 }

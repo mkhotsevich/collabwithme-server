@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateCollaborationDto } from './collaborations.dto';
 import { CollaborationsService } from './collaborations.service';
@@ -18,5 +18,15 @@ export class CollaborationsController {
   @Get()
   getAll() {
     return this.collaborationsService.getAll();
+  }
+
+  @Get(':id')
+  getById(@Param('id') id: string) {
+    return this.collaborationsService.getById(+id);
+  }
+
+  @Get('users/:id')
+  getByUserId(@Param('id') userId: string) {
+    return this.collaborationsService.getByUserId(+userId);
   }
 }
