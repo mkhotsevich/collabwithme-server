@@ -2,6 +2,8 @@ import { Collaboration } from 'src/collaborations/collaborations.entity';
 import { User } from 'src/users/users.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+export type ResponseStatus = 'sent' | 'accepted' | 'rejected';
+
 @Entity()
 export class Response {
   @PrimaryGeneratedColumn()
@@ -9,6 +11,13 @@ export class Response {
 
   @Column({ nullable: true })
   explanation: string;
+
+  @Column({
+    type: 'enum',
+    enum: ['sent', 'accepted', 'rejected'],
+    default: 'sent',
+  })
+  status: ResponseStatus;
 
   @Column()
   userId: number;

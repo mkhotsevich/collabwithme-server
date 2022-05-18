@@ -47,7 +47,13 @@ export class CollaborationsService {
 
   async getById(id: number) {
     return await this.collaborationRepository.findOne(id, {
-      relations: ['user', 'categories', 'networks', 'responses'],
+      relations: [
+        'user',
+        'categories',
+        'networks',
+        'responses',
+        'responses.user',
+      ],
     });
   }
 
