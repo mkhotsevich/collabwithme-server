@@ -14,6 +14,8 @@ export class UpdateUserDto {
   readonly lastName: string;
   readonly username: string;
   readonly gender: UserGender;
+  readonly roleId: number;
+  readonly subscriptionId: number;
 }
 
 export class UpdatePasswordDto {

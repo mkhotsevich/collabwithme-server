@@ -30,6 +30,8 @@ import { Role } from './roles/roles.entity';
 import { Room } from './rooms/rooms.entity';
 import { Rule } from './rules/rules.entity';
 import { Subscription } from './subscriptions/subscriptions.entity';
+import { UsersService } from './users/users.service';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { Subscription } from './subscriptions/subscriptions.entity';
     MessagesModule,
     ResponsesModule,
     ChatModule,
+    AdminModule,
   ],
 })
 export class AppModule {
@@ -76,6 +79,7 @@ export class AppModule {
     private subscriptionService: SubscriptionsService,
     private categoriesService: CategoriesService,
     private networksService: NetworksService,
+    private usersService: UsersService,
   ) {}
 
   async onModuleInit() {
@@ -84,5 +88,6 @@ export class AppModule {
     await this.subscriptionService.init();
     await this.categoriesService.init();
     await this.networksService.init();
+    await this.usersService.init();
   }
 }

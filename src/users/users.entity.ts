@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  PrimaryColumn,
 } from 'typeorm';
 
 export type UserGender = 'Мужской' | 'Женский' | 'Не указан';
@@ -16,6 +17,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @PrimaryColumn()
   @Column({ unique: true })
   email: string;
 

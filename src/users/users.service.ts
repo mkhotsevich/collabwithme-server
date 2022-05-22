@@ -16,6 +16,30 @@ export class UsersService {
     private subscriptionsService: SubscriptionsService,
   ) {}
 
+  async init() {
+    const role = await this.rolesService.getByName('ADMIN');
+    const subscription = await this.subscriptionsService.getByName('FREE');
+    const hashedPassword = await bcrypt.hash('123', 8);
+    const admin = await this.usersRepository.findOne({
+      where: { email: 'admin@admin.ru' },
+    });
+
+    if (admin) {
+      return admin;
+    }
+
+    const user = this.usersRepository.create({
+      email: 'admin@admin.ru',
+      firstName: 'Admin',
+      lastName: 'Admin',
+      username: 'admin',
+      password: hashedPassword,
+      role,
+      subscription,
+    });
+    return await this.usersRepository.save(user);
+  }
+
   async create(dto: CreateUserDto) {
     const role = await this.rolesService.getByName('USER');
     const subscription = await this.subscriptionsService.getByName('FREE');
@@ -46,11 +70,17 @@ export class UsersService {
     });
   }
 
-  async update(id: number, dto: UpdateUserDto) {
+  async update(id: number, { roleId, subscriptionId, ...dto }: UpdateUserDto) {
     const user = await this.usersRepository.findOne(id);
+    const newSubscription = await this.subscriptionsService.getById(
+      subscriptionId,
+    );
+    const newRole = await this.rolesService.getById(roleId);
     return await this.usersRepository.save({
       ...user,
       ...dto,
+      subscription: newSubscription || user.subscription,
+      role: newRole || user.role,
     });
   }
 
