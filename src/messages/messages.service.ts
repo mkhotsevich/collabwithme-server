@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { UsersService } from 'src/users/users.service';
@@ -11,6 +11,7 @@ export class MessagesService {
   constructor(
     @InjectRepository(Message) private messagesRepository: Repository<Message>,
     private usersService: UsersService,
+    @Inject(forwardRef(() => RoomsService))
     private roomsService: RoomsService,
   ) {}
 
@@ -19,5 +20,9 @@ export class MessagesService {
     const room = await this.roomsService.getById(roomId);
     const msg = this.messagesRepository.create({ ...dto, room, user, message });
     return await this.messagesRepository.save(msg);
+  }
+
+  async getMessagesByRoomId(id: number) {
+    return await this.messagesRepository.find({ where: { roomId: id } });
   }
 }

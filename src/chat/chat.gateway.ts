@@ -9,7 +9,7 @@ import { Socket, Server } from 'socket.io';
 import { MessagesService } from 'src/messages/messages.service';
 import { RoomsService } from 'src/rooms/rooms.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ transports: ['websocket'] })
 export class ChatGateway {
   @WebSocketServer() server: Server;
 
@@ -31,15 +31,6 @@ export class ChatGateway {
       message,
     });
     this.server.to(msg.roomId.toString()).emit('messageToClient', msg);
-  }
-
-  @SubscribeMessage('createRoom')
-  async handleCreateRoom(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { userIds: number[] },
-  ) {
-    const room = await this.roomsService.create(data.userIds);
-    client.emit('createdRoom', room.id);
   }
 
   @SubscribeMessage('joinRoom')

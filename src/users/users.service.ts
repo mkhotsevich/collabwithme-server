@@ -35,7 +35,7 @@ export class UsersService {
 
   async getById(id: number) {
     return await this.usersRepository.findOne(+id, {
-      relations: ['subscription', 'links'],
+      relations: ['subscription', 'links', 'links.network'],
     });
   }
 
