@@ -3,7 +3,6 @@ module.exports = {
     {
       name: 'collabswithme',
       script: './dist/main.js',
-      cwd: '/var/www/collabswithme',
       watch: false,
       env_development: {
         NODE_ENV: 'development',
