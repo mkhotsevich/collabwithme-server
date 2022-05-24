@@ -52,7 +52,6 @@ import { AdminModule } from './admin/admin.module';
         Rule,
         Subscription,
       ],
-      ssl: { rejectUnauthorized: false },
       synchronize: process.env.NODE_ENV === 'development',
       autoLoadEntities: true,
     }),

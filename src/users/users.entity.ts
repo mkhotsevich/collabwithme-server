@@ -17,7 +17,6 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @PrimaryColumn()
   @Column({ unique: true })
   email: string;
 
