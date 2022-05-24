@@ -52,7 +52,7 @@ import { AdminModule } from './admin/admin.module';
         Rule,
         Subscription,
       ],
-      synchronize: process.env.NODE_ENV === 'development',
+      synchronize: true,
       autoLoadEntities: true,
     }),
     UsersModule,
