@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'collabswithme',
+      name: 'collabswithme-backend',
       script: './dist/main.js',
       watch: false,
       env_development: {
