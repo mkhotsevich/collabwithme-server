@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'collabswithme-backend',
+      name: 'collabwithme-server',
       script: './dist/main.js',
       watch: false,
       env_development: {
@@ -16,21 +16,12 @@ module.exports = {
   deploy: {
     production: {
       user: 'root',
-      host: ['109.70.24.73'],
+      host: ['194.67.108.135'],
       ref: 'origin/main',
-      repo: 'git@github.com:mkhotsevich/collaber-backend.git',
-      path: '/var/www/collabswithme',
+      repo: 'git@github.com:mkhotsevich/collabwithme-server.git',
+      path: '/var/www/collabwithme.ru-server',
       'post-deploy':
         'npm install && npm run build && pm2 startOrRestart ecosystem.config.cjs --env production',
-    },
-    development: {
-      user: 'root',
-      host: ['109.70.24.73'],
-      ref: 'origin/main',
-      repo: 'git@github.com:mkhotsevich/collaber-backend.git',
-      path: '/var/www/collabswithme',
-      'post-deploy':
-        'npm install && npm run build && pm2 startOrRestart ecosystem.config.cjs --env development',
-    },
+    }
   },
 };

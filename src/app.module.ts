@@ -35,7 +35,7 @@ import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+    ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.POSTGRES_URL,
