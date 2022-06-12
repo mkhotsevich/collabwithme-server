@@ -22,6 +22,6 @@ module.exports = {
       path: '/var/www/collabwithme.ru-server',
       'post-deploy':
         'npm install && npm run build && pm2 startOrRestart ecosystem.config.cjs --env production',
-    }
+    },
   },
 };
